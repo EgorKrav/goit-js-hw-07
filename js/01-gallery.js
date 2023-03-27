@@ -17,24 +17,21 @@ const galleryMarkup = galleryItems
 
 galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
 
-const onGalleryItemClick = (event) => {
-  event.preventDefault();
-  const modal = basicLightbox.create(
-    `<img src="${event.target.dataset.source}" alt="${event.target.alt}" />`
-  );
-  modal.show();
-};
+const galleryLinks = document.querySelectorAll(".gallery__link");
 
-galleryList.addEventListener("click", onGalleryItemClick);
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    basicLightbox.close();
-  }
+galleryLinks.forEach((link) => {
+  link.classList.add("lightbox-link");
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    const instance = basicLightbox.create(
+      `<img src="${event.target.dataset.source}">`
+    );
+    instance.show();
+  });
 });
 
 document.addEventListener("click", (event) => {
-  if (event.target.classList.contains("basicLightbox")) {
+  if (event.target.classList.contains("lightbox-link")) {
     basicLightbox.close();
   }
 });
