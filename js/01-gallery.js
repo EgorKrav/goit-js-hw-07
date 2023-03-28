@@ -3,7 +3,7 @@ import { galleryItems } from './gallery-items.js';
 
 console.log(galleryItems);
 
-const galleryList = document.querySelector('.gallery');
+const galleryList = document.querySelector(".gallery");
 
 const galleryMarkup = galleryItems
   .map(({ preview, original, description }) => {
@@ -13,9 +13,9 @@ const galleryMarkup = galleryItems
               </a>
             </li>`;
   })
-  .join('');
+  .join("");
 
-galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
+galleryList.insertAdjacentHTML("beforeend", galleryMarkup);
 
 const galleryLinks = document.querySelectorAll(".gallery__link");
 
@@ -27,6 +27,12 @@ galleryLinks.forEach((link) => {
       `<img src="${event.target.dataset.source}">`
     );
     instance.show();
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        instance.close();
+      }
+    });
   });
 });
 
