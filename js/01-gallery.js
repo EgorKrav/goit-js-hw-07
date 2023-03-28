@@ -1,4 +1,4 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 console.log(galleryItems);
@@ -17,27 +17,30 @@ const galleryMarkup = galleryItems
 
 galleryList.insertAdjacentHTML("beforeend", galleryMarkup);
 
-const galleryLinks = document.querySelectorAll(".gallery__link");
+galleryList.addEventListener("click", (event) => {
+  event.preventDefault();
+  const target = event.target;
+  if (!target.classList.contains("gallery__image")) {
+    return;
+  }
 
-galleryLinks.forEach((link) => {
-  link.classList.add("lightbox-link");
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    const instance = basicLightbox.create(
-      `<img src="${event.target.dataset.source}">`
-    );
-    instance.show();
+  const instance = basicLightbox.create(
+    `<img src="${target.dataset.source}" >`,
+    {
+      onClose: () => {
+        document.removeEventListener("keydown", onEscapePress);
+      },
+      onShow: () => {
+        document.addEventListener("keydown", onEscapePress);
+      },
+    }
+  );
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        instance.close();
-      }
-    });
-  });
-});
+  instance.show();
 
-document.addEventListener("click", (event) => {
-  if (event.target.classList.contains("lightbox-link")) {
-    basicLightbox.close();
+  function onEscapePress(event) {
+    if (event.key === "Escape") {
+      instance.close();
+    }
   }
 });
